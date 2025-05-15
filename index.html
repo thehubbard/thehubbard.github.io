@@ -118,21 +118,21 @@
 
         @keyframes orbit {
             from {
-                transform: rotate(0deg);
+                transform: rotate(calc(var(--initial-angle, 0deg))); 
             }
 
             to {
-                transform: rotate(360deg);
+                transform: rotate(calc(360deg + var(--initial-angle, 0deg)));
             }
         }
 
         @keyframes counter-orbit {
             from {
-                transform: rotate(0deg);
+            transform: rotate(calc(-1 * var(--initial-angle, 0deg)));
             }
 
             to {
-                transform: rotate(-360deg);
+                transform: rotate(calc(-360deg - var(--initial-angle, 0deg)));
             }
         }
 
@@ -294,8 +294,11 @@
             const moonContainers = document.querySelectorAll('.moon-container');
             // TODO add in randomness sxo orbits do not start aligned.
             moonContainers.forEach((container, index) => {
+                console.log(index);
                 const angle = (index * 90) % 360; // Space moons 90 degrees apart
-                container.style.transform = `rotate(${angle}deg)`;
+                // container.style.transform = `rotate(${angle}deg)`;
+                container.style.setProperty('--initial-angle', `${angle}deg`); // Set the CSS variable
+
             });
         }
 
