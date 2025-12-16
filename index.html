@@ -107,7 +107,9 @@
             position: absolute;
             background-color: rgba(0, 0, 0, 0.7);
             z-index: 30;
-            /* keep label horizontal by applying counter-rotation animation; duration set in JS to match orbit */
+            /* keep label horizontal by applying counter-rotation animation; 
+            duration set in JS to match orbit. This might be the cause of the
+            bug... */
             animation-name: counter-orbit;
             animation-timing-function: linear;
             animation-iteration-count: infinite;
