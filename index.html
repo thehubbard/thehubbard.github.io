@@ -1,1 +1,352 @@
-Hello World
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr Michael Hubbard</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #0a0a2a;
+            color: white;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+        .solar-system {
+            position: relative;
+            width: 600px;
+            height: 600px;
+        }
+
+        .planet {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background-size: cover;
+            background-position: center;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+            z-index: 10;
+        }
+
+        .orbit {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .moon-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            animation-name: orbit;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            transform-origin: center;
+            pointer-events: auto;
+        }
+
+        #moon-container-1 { z-index: 24; }
+        #moon-container-2 { z-index: 23; }
+        #moon-container-3 { z-index: 22; }
+        #moon-container-4 { z-index: 21; }
+
+        .moon {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            transform: translate(-50%, -50%);
+            z-index: 20;
+        }
+
+        .moon-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Counter-rotate to keep icon upright */
+            animation-name: counter-orbit;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+        }
+
+        .moon:hover {
+            transform: translate(-50%, -50%) scale(1.2);
+            box-shadow: 0 0 15px white;
+        }
+
+        .moon img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .moon-label {
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 30;
+            /* keep label horizontal by applying counter-rotation animation; 
+            duration set in JS to match orbit. This might be the cause of the
+            bug... */
+            animation-name: counter-orbit;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            top: -55px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .paused {
+            animation-play-state: paused;
+        }
+
+        @keyframes orbit {
+            from {
+                transform: rotate(calc(var(--initial-angle, 0deg))); 
+            }
+
+            to {
+                transform: rotate(calc(360deg + var(--initial-angle, 0deg)));
+            }
+        }
+
+        @keyframes counter-orbit {
+            from {
+                transform: rotateZ(calc(-1 * var(--initial-angle, 0deg)));
+            }
+
+            to {
+                transform: rotateZ(calc(-360deg - var(--initial-angle, 0deg)));
+            }
+        }
+
+        .profile-name {
+            position: absolute;
+            top: -50px;
+            text-align: center;
+            width: 100%;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="stars" id="stars"></div>
+
+    <div class="solar-system">
+        <div class="planet" id="profile-picture"></div>
+
+        <!-- Inner most orbit. Orbit 1 -->
+        <div class="orbit" style="width: 250px; height: 250px;"></div>
+        <div class="moon-container" id="moon-container-1" style="animation-duration: 20s;">
+            <div class="moon" id="moon-1" style="top: 125px; left: 0;">
+                <div class="moon-content" style="animation-duration: 20s;">
+                    <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/8.15.0/github.svg" alt="GitHub">
+                </div>
+                <div class="moon-label" id="label-1">GitHub: thehubbard</div>
+            </div>
+        </div>
+
+        <!-- Orbit 2 -->
+        <div class="orbit" style="width: 350px; height: 350px;"></div>
+        <div class="moon-container" id="moon-container-2" style="animation-duration: 25s;">
+            <div class="moon" id="moon-2" style="top: 175px; left: 0;">
+                <div class="moon-content" style="animation-duration: 25s;">
+                    <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/8.15.0/linkedin.svg" alt="LinkedIn">
+                </div>
+                <div class="moon-label" id="label-2">LinkedIn: Michael Hubbard</div>
+            </div>
+        </div>
+
+        <!-- Orbit 3 -->
+        <div class="orbit" style="width: 450px; height: 450px;"></div>
+        <div class="moon-container" id="moon-container-3" style="animation-duration: 30s;">
+            <div class="moon" id="moon-3" style="top: 225px; left: 0;">
+                <div class="moon-content" style="animation-duration: 30s;">
+                    <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/8.15.0/orcid.svg" alt="ORCiD">
+                </div>
+                <div class="moon-label" id="label-3">ORCiD: 0000-0002-4378-826X</div>
+            </div>
+        </div>
+
+        <!-- Orbit 4 -->
+        <div class="orbit" style="width: 550px; height: 550px;"></div>
+        <div class="moon-container" id="moon-container-4" style="animation-duration: 35s;">
+            <div class="moon" id="moon-4" style="top: 275px; left: 0;">
+                <div class="moon-content" style="animation-duration: 35s;">
+                    <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/8.15.0/googlescholar.svg"
+                        alt="Google Scholar">
+                </div>
+                <div class="moon-label" id="label-4">Google Scholar: Michael Hubbard</div>
+            </div>
+        </div>
+
+        <div class="profile-name">Dr Michael Hubbard</div>
+    </div>
+
+    <script>
+        const githubUsername = 'thehubbard';
+
+        // Creates a gradient to look like a sphere if icon cannot be grabbed
+        // Function to fetch GitHub profile picture
+        async function fetchGitHubProfilePic() {
+            const profileEl = document.getElementById('profile-picture');
+            try {
+                const response = await fetch(`https://api.github.com/users/${githubUsername}`);
+                const data = await response.json();
+
+                if (data.avatar_url) {
+                    profileEl.style.backgroundImage = `url(${data.avatar_url})`;
+                    profileEl.style.backgroundSize = 'cover';
+                    profileEl.style.backgroundPosition = 'center';
+                } else {
+                    // Fallback profile - radial gradient to mimic a spherical look
+                    profileEl.style.backgroundImage = 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.2) 6%, #6fd07a 35%, #2a6b0f 100%)';
+                    profileEl.style.backgroundSize = 'cover';
+                }
+            } catch (error) {
+                console.error('Error fetching GitHub profile:', error);
+                // Fallback profile - radial gradient to mimic a spherical look
+                profileEl.style.backgroundImage = 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.2) 6%, #6fd07a 35%, #2a6b0f 100%)';
+                profileEl.style.backgroundSize = 'cover';
+            }
+        }
+
+        // Generate stars in the background
+        function generateStars() {
+            const starsContainer = document.getElementById('stars');
+            const starsCount = 100;
+
+            for (let i = 0; i < starsCount; i++) {
+                const star = document.createElement('div');
+                const size = Math.random() * 2;
+
+                star.style.position = 'absolute';
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.backgroundColor = 'white';
+                star.style.borderRadius = '50%';
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.opacity = Math.random();
+                star.style.animation = `twinkle ${Math.random() * 5 + 3}s infinite alternate`;
+
+                starsContainer.appendChild(star);
+            }
+        }
+
+        const socialLinks = [
+            { id: 1, url: 'https://github.com/thehubbard' },
+            { id: 2, url: 'www.linkedin.com/in/michael-hubbard-43860a6b' },
+            { id: 3, url: 'https://orcid.org/0000-0002-4378-826X' },
+            { id: 4, url: 'https://scholar.google.com/citations?user=-HBe-lUAAAAJ&hl=en' }
+        ];
+
+        // Add event listeners to moons
+        // TODO solve bug of labels being different distances as they orbit.
+        function setupMoons() {
+            socialLinks.forEach(social => {
+                const moon = document.getElementById(`moon-${social.id}`);
+                const container = document.getElementById(`moon-container-${social.id}`);
+                const label = document.getElementById(`label-${social.id}`);
+                const content = moon.querySelector('.moon-content');
+
+                // ensure label starts hidden
+                label.style.opacity = '0';
+
+                // sync label counter-rotation duration with the moon-content/orbit so it stays horizontal
+                const duration = content.style.animationDuration || container.style.animationDuration;
+                if (duration) {
+                    label.style.animationDuration = duration;
+                }
+
+                moon.addEventListener('click', () => {
+                    window.open(social.url, '_blank');
+                });
+
+                moon.addEventListener('mouseenter', () => {
+                    container.classList.add('paused');
+                    content.classList.add('paused');
+                    label.style.opacity = '1';
+                    label.classList.add('paused');
+                });
+
+                moon.addEventListener('mouseleave', () => {
+                    container.classList.remove('paused');
+                    content.classList.remove('paused');
+                    label.style.opacity = '0';
+                    label.classList.remove('paused');
+                });
+            });
+        }
+
+        // Position moons at different angles
+        function positionMoons() {
+            const moonContainers = document.querySelectorAll('.moon-container');
+            moonContainers.forEach((container, index) => {
+                const angle = (index * 90) % 360;
+                container.style.setProperty('--initial-angle', `${angle}deg`);
+
+            });
+        }
+
+        // Initialize everything
+        window.onload = function () {
+            fetchGitHubProfilePic();
+            generateStars();
+            setupMoons();
+            positionMoons();
+
+            // Add twinkle animation to CSS
+            const style = document.createElement('style');
+            style.innerHTML = `
+                @keyframes twinkle {
+                    0% { opacity: 0.3; }
+                    100% { opacity: 1; }
+                }
+            `;
+            document.head.appendChild(style);
+        };
+    </script>
+</body>
+
+</html>
